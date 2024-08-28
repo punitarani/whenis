@@ -2,11 +2,12 @@
 
 interface EventDateProps {
   name: string;
-  date: string;
+  date: Date;
+  local: boolean;
 }
 
-export function EventDate({ name, date }: EventDateProps) {
-  const eventDate = new Date(date);
+export function EventDate({ name, date, local }: EventDateProps) {
+  const eventDate = local ? new Date(date.toLocaleString()) : date;
 
   return (
     <div className="mt-4 text-center">

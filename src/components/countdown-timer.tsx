@@ -4,16 +4,17 @@ import { useEffect, useState } from "react";
 
 interface CountdownTimerProps {
   name: string;
-  date: string;
+  date: Date;
+  local: boolean;
 }
 
-export function CountdownTimer({ name, date }: CountdownTimerProps) {
+export function CountdownTimer({ name, date, local }: CountdownTimerProps) {
   const [timeLeft, setTimeLeft] = useState<ReturnType<
     typeof calculateTimeLeft
   > | null>(null);
 
   useEffect(() => {
-    const targetDate = new Date(date);
+    const targetDate = local ? new Date(date.toLocaleString()) : date;
     setTimeLeft(calculateTimeLeft(targetDate)); // Set initial time left on client side
 
     const timer = setInterval(() => {
@@ -21,7 +22,7 @@ export function CountdownTimer({ name, date }: CountdownTimerProps) {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [date]);
+  }, [date, local]);
 
   function calculateTimeLeft(targetDate: Date) {
     const now = new Date();

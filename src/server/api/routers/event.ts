@@ -13,7 +13,7 @@ export const eventRouter = createTRPCRouter({
     .query(async ({ input }) => {
       const event = await db.events.findFirst({
         where: { code: { equals: input.code, mode: "insensitive" } },
-        select: { event: true, code: true, date: true },
+        select: { event: true, code: true, date: true, local: true },
       });
 
       if (!event) {

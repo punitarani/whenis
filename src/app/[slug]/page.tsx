@@ -17,15 +17,15 @@ export default async function EventPage({
       return null;
     }
 
-    const name = event.event!;
-    const date = new Date(event.date!);
+    const { event: name, date, local } = event;
+    const eventDate = new Date(date);
 
     return (
       <HydrateClient>
         <main className="flex min-h-screen flex-col items-center justify-center">
           <h1 className="text-3xl font-bold">{name}</h1>
-          <EventDate name={name} date={date.toISOString()} />
-          <CountdownTimer name={name} date={date.toISOString()} />
+          <EventDate name={name} date={eventDate} local={local} />
+          <CountdownTimer name={name} date={eventDate} local={local} />
         </main>
       </HydrateClient>
     );
