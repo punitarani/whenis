@@ -7,12 +7,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+/// This model contains an expression index which requires additional setup for migrations. Visit https://pris.ly/d/expression-indexes for more info.
 model events {
-  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id         String                   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   event      String
-  code       String   @unique
-  date       DateTime @db.Timestamptz(6)
-  local      Boolean  @default(true)
-  created_at DateTime @default(now()) @db.Timestamptz(6)
-  updated_at DateTime @default(now()) @db.Timestamptz(6)
+  code       String                   @unique
+  date       DateTime                 @db.Timestamptz(6)
+  created_at DateTime                 @default(now()) @db.Timestamptz(6)
+  updated_at DateTime                 @default(now()) @db.Timestamptz(6)
+  local      Boolean                  @default(true)
+  event_tsv  Unsupported("tsvector")? @default(dbgenerated("to_tsvector('english'::regconfig, event)"))
+
+  @@index([event(ops: raw("gin_trgm_ops"))], map: "events_event_trgm_idx", type: Gin)
+  @@index([event_tsv], type: Gin)
 }
