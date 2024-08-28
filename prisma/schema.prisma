@@ -11,7 +11,7 @@ model events {
   id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   event      String?
   code       String?
-  date       DateTime? @db.Timestamp(6)
-  created_at DateTime? @default(now()) @db.Timestamp(6)
-  updated_at DateTime? @default(now()) @db.Timestamp(6)
+  date       DateTime? @db.Timestamptz(6)
+  created_at DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at DateTime? @default(now()) @db.Timestamptz(6)
 }
